@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Citas - Registrar Cita</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <header>
+        <h1>Sistema de Gestión Médica</h1>
+        <p>Usuario: <strong>Recepcionista Activo</strong> | <a href="#">Cerrar Sesión</a></p>
+    </header>
+
+    <main>
+        <h2>Registrar Nueva Cita</h2>
+        
+        <div id="contenedor-mensajes"></div>
+
+        <form id="form-registrar-cita">
+            
+            <fieldset>
+                <legend>Datos del Paciente</legend>
+                <label for="buscar-paciente">DNI o Nombre Completo: *</label>
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" id="buscar-paciente" name="paciente" placeholder="Ej: 71234567" required>
+                    <button type="button" id="btn-buscar-paciente">Buscar</button>
+                </div>
+                <span id="estado-paciente"></span>
+                
+                <div id="info-paciente-detallada" style="margin-top: 10px; padding: 10px; background: #f9f9f9; border-left: 3px solid #ccc; display: none;">
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Detalles de la Cita</legend>
+                
+                <label for="especialidad">Especialidad Médica: *</label>
+                <select id="especialidad" name="especialidad" required>
+                    <option value="" disabled selected>Seleccione una especialidad</option>
+                    <option value="cardiologia">Cardiología</option>
+                    <option value="pediatria">Pediatría</option>
+                    <option value="medicina_general">Medicina General</option>
+                </select>
+
+                <label for="medico">Médico Especialista: *</label>
+                <select id="medico" name="medico" required disabled>
+                    <option value="" disabled selected>Seleccione primero especialidad</option>
+                </select>
+
+                <label for="fecha">Fecha de la Cita: *</label>
+                <input type="date" id="fecha" name="fecha" required>
+
+                <label for="hora">Hora de la Cita: *</label>
+                <select id="hora" name="hora" required disabled>
+                    <option value="" disabled selected>Seleccione médico y fecha</option>
+                </select>
+            </fieldset>
+
+            <fieldset>
+                <legend>Información de Atención</legend>
+                <label for="motivo">Motivo de Atención: *</label>
+                <textarea id="motivo" name="motivo" rows="3" placeholder="Describa el motivo" required></textarea>
+
+                <label for="observaciones">Observaciones (Opcional):</label>
+                <textarea id="observaciones" name="observaciones" rows="2"></textarea>
+            </fieldset>
+
+            <div class="acciones-formulario">
+                <button type="submit" id="btn-registrar">Confirmar y Registrar Cita</button>
+                <button type="reset" id="btn-cancelar">Limpiar Formulario</button>
+            </div>
+
+        </form>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>

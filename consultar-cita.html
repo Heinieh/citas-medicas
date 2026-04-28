@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Consultar Citas</title>
+
+<!-- Enlace al CSS -->
+<link rel="stylesheet" href="css/styles.css">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Consultar Citas Médicas</h1>
+
+    <h2>Historia de Usuario</h2>
+    <div class="card">
+        <p><strong>Como:</strong> Médico del consultorio</p>
+        <p><strong>Quiero:</strong> Consultar citas con filtros</p>
+        <p><strong>Para:</strong> Organizar mi jornada médica</p>
+    </div>
+
+    <h2>Control de Versiones</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Versión</th>
+                <th>Descripción</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>08/04/2026</td>
+                <td>1</td>
+                <td>Descripción inicial</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Reglas de Negocio</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Regla</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>RN-01</td><td>Médico autenticado</td></tr>
+            <tr><td>RN-02</td><td>Uso de filtros</td></tr>
+            <tr><td>RN-03</td><td>Seleccionar al menos un filtro</td></tr>
+            <tr><td>RN-04</td><td>Solo citas propias</td></tr>
+            <tr><td>RN-05</td><td>Mostrar datos del paciente</td></tr>
+            <tr><td>RN-06</td><td>No modificar citas</td></tr>
+            <tr><td>RN-07</td><td>Validar filtros</td></tr>
+        </tbody>
+    </table>
+
+    <h2>Criterios de Aceptación</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Escenario</th>
+                <th>Dado</th>
+                <th>Cuando</th>
+                <th>Entonces</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>CA-01</td>
+                <td>Consultar por fecha</td>
+                <td>Médico autenticado</td>
+                <td>Selecciona fecha</td>
+                <td>Muestra citas</td>
+            </tr>
+            <tr>
+                <td>CA-02</td>
+                <td>Rango de fechas</td>
+                <td>En módulo</td>
+                <td>Selecciona rango</td>
+                <td>Muestra resultados</td>
+            </tr>
+            <tr>
+                <td>CA-03</td>
+                <td>Sin filtros</td>
+                <td>Consulta</td>
+                <td>No selecciona</td>
+                <td>Advertencia</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Prototipo</h2>
+    <div class="card">
+        <img src="prototipo.png" alt="Prototipo del sistema" class="imagen">
+    </div>
+
+    <h2>Anexos</h2>
+    <ul class="list">
+        <li>Historia de Usuario</li>
+        <li>Control de Versiones</li>
+        <li>Descripción</li>
+        <li>Prototipo</li>
+    </ul>
+
+    <div class="footer">
+        Ingeniería Web - Sistema de Citas Médicas
+    </div>
+
+</div>
+
+</body>
+</html>
