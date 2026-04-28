@@ -1,0 +1,63 @@
+:root{
+    --azul-primario: #2c3e50;
+    --azul-medico: #3498db;
+    --gris-fondo: #f4f7f6;
+    --color-texto: #2f3640;
+}
+
+body{
+    background-color: var(--gris-fondo);
+    color: var(--color-texto);
+    font-family: Arial, sans-serif;
+}
+
+h1{
+    color: var(--azul-primario);
+}
+
+table{
+    width: 100%;
+    border-collapse: collapse; /* se usa para los bordes dobles se unan en una sola línea*/
+    background-color: white;
+    margin-top: 20px;
+    
+}
+
+th, td {
+    padding: 12px; /* sespacio interno para no estar pegado al borde*/
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+button{
+    background-color: var(--azul-medico);
+    color: rgb(38, 38, 245);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/*efecto visual al momento de pasar el curso, lo oscurece un poco*/
+button:hover{
+    background-color: var(--azul-primario);
+    transition: 0.3s;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="date"],
+select,
+textarea{
+    width: 100%;
+    padding:10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+input:focus, select:focus, textarea:focus{
+    border: 2px solid var(--azul-medico);
+}

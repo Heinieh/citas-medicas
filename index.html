@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sistema de Gestión de Citas Médicas - Inicia sesión para acceder">
+    <title>Login - Citas Médicas</title>
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+    <main class="login-container">
+        <header>
+            <h1>Citas Médicas</h1>
+            <img src="imagenes/logoucv.jpg" alt="logo_citas_medicas" class="logo">
+            <p class="subtitle">Sistema de Gestión de Citas</p>
+        </header>
+
+        <form id="loginForm" action="menu_principal.html" method="get">
+            <div class="form-group">
+                <label for="usuario">Usuario:</label>
+                <input 
+                    type="text" 
+                    id="usuario" 
+                    name="usuario" 
+                    placeholder="Ingrese su usuario" 
+                    required
+                    autocomplete="username"
+                    aria-label="Campo de usuario">
+            </div>
+
+            <div class="form-group">
+                <label for="contrasena">Contraseña:</label>
+                <input 
+                    type="password" 
+                    id="contrasena" 
+                    name="contrasena" 
+                    placeholder="Ingrese su contraseña" 
+                    required
+                    autocomplete="current-password"
+                    aria-label="Campo de contraseña">
+            </div>
+
+            <button type="submit">Iniciar Sesión</button>
+        </form>
+
+        <aside class="credentials-info">
+            <strong>Credenciales de Prueba:</strong><br>
+            Usuario: <strong>admin</strong><br>
+            Contraseña: <strong>1234</strong>
+        </aside>
+    </main>
+</body>
+</html>
