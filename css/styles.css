@@ -1,129 +1,117 @@
-/* Variables de color para mantener consistencia */
-:root {
-    --primary-color: #2C3E50; /* Azul médico */
-    --secondary-color: #3498DB; /* Azul claro para botones secundarios */
-    --bg-color: #F4F7F6; /* Fondo general gris muy claro */
-    --text-color: #2F3640; /* Texto principal oscuro para legibilidad */
-    --border-color: #CCCCCC;
-    --success-color: #27AE60; /* Verde para confirmaciones */
-    --error-color: #E74C3C; /* Rojo para errores */
-}
-
-/* Estilos base */
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: var(--bg-color);
-    color: var(--text-color);
+/* Reseteo básico */
+* {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
-/* Encabezado (Header) */
-header {
-    background-color: var(--primary-color);
-    color: white;
-    padding: 15px 40px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+/* Fondo degradado azul oscuro (Estilo Prototipo) */
+body.fondo-sistema {
+    background: linear-gradient(180deg, #2874A6 0%, #154360 100%);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+    min-height: 100vh;
+    padding: 30px 15px;
 }
 
-header h1 {
-    margin: 0;
-    font-size: 1.5rem;
+/* Contenedor central para limitar el ancho */
+.contenedor-principal {
+    max-width: 1000px;
+    margin: 0 auto;
 }
 
-header a {
-    color: #E2F0FF;
-    text-decoration: none;
-    margin-left: 15px;
-    font-weight: 600;
-}
-
-header a:hover {
-    text-decoration: underline;
-    color: white;
-}
-
-/* Contenedor principal */
-main {
-    max-width: 800px;
-    margin: 40px auto;
-    background: white;
-    padding: 35px;
+/* Estilo común para los bloques blancos (Tarjetas) */
+.tarjeta {
+    background-color: #FFFFFF;
     border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    margin-bottom: 25px;
+    padding: 25px 35px;
 }
 
-/* =========================================
-   NUEVO: Contenedor de Título y Botón Volver
-   ========================================= */
-.header-registro {
+/* Cabecera superior */
+.cabecera-sistema {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 5px; /* Reducido porque el <hr> ya da espacio */
+    padding: 15px 35px;
 }
 
-.header-registro h2 {
-    border-bottom: none; /* Quitamos el borde de aquí para usar el <hr> del HTML */
-    margin-bottom: 0;
-    padding-bottom: 0;
+.titulo-sistema h1 {
+    font-size: 22px;
+    color: #2C3E50;
+    margin: 0;
+}
+
+.info-usuario {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 14px;
+    color: #34495E;
+}
+
+/* Botones Superiores */
+.btn-logout {
+    background-color: #2C3E50;
+    color: #FFF;
+    padding: 8px 16px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: 500;
+    transition: background 0.3s;
+}
+
+.btn-logout:hover {
+    background-color: #1A252F;
 }
 
 .btn-volver {
+    background-color: #95A5A6;
+    color: white;
+    padding: 6px 12px;
     text-decoration: none;
-    background-color: #FFFFFF;
-    color: var(--secondary-color);
-    padding: 8px 16px;
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
-    font-size: 0.9rem;
-    font-weight: 500;
-    transition: all 0.2s ease;
+    border-radius: 5px;
+    font-size: 13px;
 }
 
-.btn-volver:hover {
-    background-color: var(--bg-color);
-    border-color: var(--secondary-color);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-
-hr {
-    border: 0;
-    border-top: 2px solid var(--primary-color);
+/* Área del título del formulario */
+.encabezado-formulario {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #EAECEE;
+    padding-bottom: 15px;
     margin-bottom: 25px;
 }
 
-/* Agrupación de campos (Fieldsets) */
-fieldset {
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
-    padding: 20px 25px;
+.encabezado-formulario h2 {
+    font-size: 20px;
+    color: #2C3E50;
+}
+
+/* Estilos de Formulario */
+fieldset.seccion-formulario {
+    border: none;
     margin-bottom: 25px;
-    background-color: #FAFCFF;
 }
 
 legend {
+    font-size: 16px;
     font-weight: bold;
-    color: var(--primary-color);
-    background: white;
-    padding: 5px 15px;
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
+    color: #2980B9;
+    margin-bottom: 15px;
+    width: 100%;
+    border-bottom: 1px solid #EAECEE;
+    padding-bottom: 5px;
 }
 
-/* Etiquetas e Inputs */
 label {
     display: block;
-    font-weight: 600;
     margin-bottom: 8px;
-    margin-top: 15px;
-}
-
-fieldset label:first-of-type {
-    margin-top: 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: #555;
 }
 
 input[type="text"],
@@ -131,108 +119,82 @@ input[type="date"],
 select,
 textarea {
     width: 100%;
-    padding: 12px;
-    border: 1px solid var(--border-color);
+    padding: 10px 12px;
+    border: 1px solid #BDC3C7;
     border-radius: 4px;
-    box-sizing: border-box;
-    font-family: inherit;
-    font-size: 1rem;
-    transition: border-color 0.3s;
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 15px;
+    outline: none;
 }
 
 input:focus, select:focus, textarea:focus {
-    border-color: var(--primary-color);
-    outline: none;
-    box-shadow: 0 0 5px rgba(44, 62, 80, 0.2);
+    border-color: #3498DB;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
 }
 
-input:disabled, select:disabled {
-    background-color: #E9ECEF;
-    cursor: not-allowed;
-    color: #6C757D;
-}
-
-/* Botones */
-button {
-    padding: 12px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 1rem;
-    transition: background-color 0.3s, transform 0.1s;
-}
-
-button:active {
-    transform: scale(0.98);
-}
-
-#btn-buscar-paciente {
-    background-color: var(--secondary-color);
-    color: white;
-    margin-top: 0; /* Ajustado para alinearse con el input si usas flex */
-    width: 100%;
-    max-width: 120px;
-}
-
-#btn-buscar-paciente:hover {
-    background-color: #2980B9;
-}
-
-/* Contenedor de botones finales */
-.acciones-formulario {
+/* Inputs en línea (DNI + Botón Buscar) */
+.grupo-busqueda {
     display: flex;
-    gap: 15px;
-    margin-top: 10px;
+    gap: 10px;
 }
 
-#btn-registrar {
-    background-color: var(--success-color);
-    color: white;
+.grupo-busqueda input {
+    margin-bottom: 0;
+}
+
+/* Sistema de columnas para el formulario */
+.fila-formulario {
+    display: flex;
+    gap: 20px;
+}
+
+.columna-formulario {
     flex: 1;
 }
 
-#btn-registrar:hover {
-    background-color: #219150;
+/* Botones de Acción del Formulario */
+.acciones-formulario {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
 }
 
-#btn-cancelar {
-    background-color: #6C757D;
+.btn-accion, .btn-guardar {
+    background-color: #3498DB;
     color: white;
-    padding: 12px 30px;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
 }
 
-#btn-cancelar:hover {
-    background-color: #5A6268;
+.btn-accion:hover, .btn-guardar:hover {
+    background-color: #2980B9;
 }
 
-/* Clases de Alerta */
-.alerta {
-    padding: 15px 20px;
-    margin-bottom: 25px;
-    border: 1px solid transparent;
-    border-radius: 6px;
-    font-weight: 500;
-    display: none;
+.btn-limpiar {
+    background-color: #ECF0F1;
+    color: #7F8C8D;
+    border: 1px solid #BDC3C7;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
 }
 
-.alerta-exito {
-    color: #155724;
-    background-color: #D4EDDA;
-    border-color: #C3E6CB;
-    display: block;
+.btn-limpiar:hover {
+    background-color: #D5D8DC;
 }
 
-.alerta-error {
-    color: #721C24;
-    background-color: #F8D7DA;
-    border-color: #F5C6CB;
-    display: block;
-}
-
-.alerta-advertencia {
-    color: #856404;
-    background-color: #FFF3CD;
-    border-color: #FFEEBA;
-    display: block;
+/* Caja de respuesta de paciente verificado */
+.caja-info-paciente {
+    margin-top: 10px;
+    padding: 15px;
+    background-color: #F8F9FA;
+    border-left: 4px solid #2ECC71;
+    border-radius: 4px;
+    font-size: 14px;
 }
