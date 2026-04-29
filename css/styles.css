@@ -56,11 +56,43 @@ main {
     box-shadow: 0 4px 15px rgba(0,0,0,0.08);
 }
 
-h2 {
-    color: var(--primary-color);
-    border-bottom: 2px solid var(--primary-color);
-    padding-bottom: 10px;
-    margin-top: 0;
+/* =========================================
+   NUEVO: Contenedor de Título y Botón Volver
+   ========================================= */
+.header-registro {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px; /* Reducido porque el <hr> ya da espacio */
+}
+
+.header-registro h2 {
+    border-bottom: none; /* Quitamos el borde de aquí para usar el <hr> del HTML */
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.btn-volver {
+    text-decoration: none;
+    background-color: #FFFFFF;
+    color: var(--secondary-color);
+    padding: 8px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.btn-volver:hover {
+    background-color: var(--bg-color);
+    border-color: var(--secondary-color);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+hr {
+    border: 0;
+    border-top: 2px solid var(--primary-color);
     margin-bottom: 25px;
 }
 
@@ -70,7 +102,7 @@ fieldset {
     border-radius: 6px;
     padding: 20px 25px;
     margin-bottom: 25px;
-    background-color: #FAFCFF; /* Un azul casi blanco para diferenciar las secciones */
+    background-color: #FAFCFF;
 }
 
 legend {
@@ -91,7 +123,7 @@ label {
 }
 
 fieldset label:first-of-type {
-    margin-top: 0; /* Quita el margen superior al primer elemento del fieldset */
+    margin-top: 0;
 }
 
 input[type="text"],
@@ -102,7 +134,7 @@ textarea {
     padding: 12px;
     border: 1px solid var(--border-color);
     border-radius: 4px;
-    box-sizing: border-box; /* Asegura que el padding no rompa el ancho del 100% */
+    box-sizing: border-box;
     font-family: inherit;
     font-size: 1rem;
     transition: border-color 0.3s;
@@ -111,10 +143,10 @@ textarea {
 input:focus, select:focus, textarea:focus {
     border-color: var(--primary-color);
     outline: none;
-    box-shadow: 0 0 5px rgba(0, 90, 156, 0.3);
+    box-shadow: 0 0 5px rgba(44, 62, 80, 0.2);
 }
 
-/* Estilo para campos deshabilitados  */
+/* Estilo para campos deshabilitados (como el de médico u hora antes de elegir especialidad/fecha) */
 input:disabled, select:disabled {
     background-color: #E9ECEF;
     cursor: not-allowed;
@@ -139,13 +171,13 @@ button:active {
 #btn-buscar-paciente {
     background-color: var(--secondary-color);
     color: white;
-    margin-top: 10px;
-    width: 100%; /* Botón de bloque para alinear mejor en móviles */
-    max-width: 200px;
+    margin-top: 0; /* Ajustado para alinearse con el input si usas flex */
+    width: 100%;
+    max-width: 120px;
 }
 
 #btn-buscar-paciente:hover {
-    background-color: #0056b3;
+    background-color: #2980B9;
 }
 
 /* Contenedor de botones finales */
@@ -158,11 +190,11 @@ button:active {
 #btn-registrar {
     background-color: var(--success-color);
     color: white;
-    flex: 1; /* Ocupa el espacio disponible */
+    flex: 1;
 }
 
 #btn-registrar:hover {
-    background-color: #218838;
+    background-color: #219150;
 }
 
 #btn-cancelar {
@@ -175,17 +207,14 @@ button:active {
     background-color: #5A6268;
 }
 
-/* =========================================
-   Clases CSS para los mensajes de JS (CA-02, CA-03, etc.)
-   Estas clases se inyectarán dinámicamente
-   ========================================= */
+/* Clases de Alerta */
 .alerta {
     padding: 15px 20px;
     margin-bottom: 25px;
     border: 1px solid transparent;
     border-radius: 6px;
     font-weight: 500;
-    display: none; /* Oculto por defecto hasta que JS le quite esta propiedad */
+    display: none;
 }
 
 .alerta-exito {
