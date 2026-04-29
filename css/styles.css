@@ -4,6 +4,7 @@
     margin: 0;
     padding: 0;
 }
+
 /* Fondo degradado azul oscuro (Estilo Prototipo) */
 body.fondo-sistema {
     background: linear-gradient(180deg, #2874A6 0%, #154360 100%);
