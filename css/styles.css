@@ -1,12 +1,12 @@
 /* Variables de color para mantener consistencia */
 :root {
-    --primary-color: #2C3E50; /* Azul médico */
-    --secondary-color: #3498DB; /* Azul claro para botones secundarios */
-    --bg-color: #F4F7F6; /* Fondo general gris muy claro */
-    --text-color: #2F3640; /* Texto principal oscuro para legibilidad */
+    --primary-color: #2C3E50; 
+    --secondary-color: #3498DB; 
+    --bg-color: #F4F7F6; 
+    --text-color: #2F3640; 
     --border-color: #CCCCCC;
-    --success-color: #27AE60; /* Verde para confirmaciones */
-    --error-color: #E74C3C; /* Rojo para errores */
+    --success-color: #27AE60; 
+    --error-color: #E74C3C; 
 }
 
 /* Estilos base */
@@ -64,7 +64,7 @@ h2 {
     margin-bottom: 25px;
 }
 
-/* Agrupación de campos (Fieldsets) */
+/* Agrupación de campos */
 fieldset {
     border: 1px solid var(--border-color);
     border-radius: 6px;
@@ -114,7 +114,7 @@ input:focus, select:focus, textarea:focus {
     box-shadow: 0 0 5px rgba(0, 90, 156, 0.3);
 }
 
-/* Estilo para campos deshabilitados (como el de médico u hora antes de elegir especialidad/fecha) */
+/* Estilo para campos deshabilitados  */
 input:disabled, select:disabled {
     background-color: #E9ECEF;
     cursor: not-allowed;
