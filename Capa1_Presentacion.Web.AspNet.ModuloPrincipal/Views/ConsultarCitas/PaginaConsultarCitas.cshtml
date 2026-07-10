@@ -85,8 +85,8 @@
                             $.each(response.data, function (i, cita) {
                                 // Formatear fecha JSON /Date(milliseconds)/
                                 let fechaCitaStr = "";
-                                if (cita.FechaCita) {
-                                    const ms = parseInt(cita.FechaCita.replace(/\/Date\((-?\d+)\)\//, '$1'));
+                                if (cita.Fecha_cita) {
+                                    const ms = parseInt(cita.Fecha_cita.replace(/\/Date\((-?\d+)\)\//, '$1'));
                                     const d = new Date(ms);
                                     const dia = String(d.getDate()).padStart(2, '0');
                                     const mes = String(d.getMonth() + 1).padStart(2, '0');
@@ -96,28 +96,30 @@
 
                                 // Formatear hora (TimeSpan)
                                 let horaStr = "";
-                                if (cita.HoraCita) {
-                                    if (typeof cita.HoraCita === "object") {
-                                        const h = String(cita.HoraCita.Hours).padStart(2, '0');
-                                        const m = String(cita.HoraCita.Minutes).padStart(2, '0');
+                                if (cita.Hora_cita) {
+                                    if (typeof cita.Hora_cita === "object") {
+                                        const h = String(cita.Hora_cita.Hours).padStart(2, '0');
+                                        const m = String(cita.Hora_cita.Minutes).padStart(2, '0');
                                         horaStr = `${h}:${m}`;
                                     } else {
-                                        horaStr = cita.HoraCita;
+                                        horaStr = cita.Hora_cita;
                                     }
                                 }
 
                                 let colorEstado = "#2e86c1";
-                                if (cita.EstadoCita && cita.EstadoCita.toLowerCase() === "atendida") colorEstado = "#239b56";
-                                if (cita.EstadoCita && cita.EstadoCita.toLowerCase() === "cancelada") colorEstado = "#e74c3c";
+                                if (cita.Estado && cita.Estado.toLowerCase() === "atendida") colorEstado = "#239b56";
+                                if (cita.Estado && cita.Estado.toLowerCase() === "cancelada") colorEstado = "#e74c3c";
+
+                                const nombreCompleto = (cita.PacienteNombres || "") + " " + (cita.PacienteApellidos || "");
 
                                 const fila = `<tr>
                                     <td>${fechaCitaStr}</td>
                                     <td>${horaStr}</td>
-                                    <td>${cita.NombrePaciente}</td>
-                                    <td>${cita.DocumentoPaciente}</td>
-                                    <td>${cita.EspecialidadMedica}</td>
-                                    <td>${cita.MotivoAtencion}</td>
-                                    <td><span style="color: ${colorEstado}; font-weight: bold;">${cita.EstadoCita}</span></td>
+                                    <td>${nombreCompleto}</td>
+                                    <td>${cita.PacienteDocumento || ""}</td>
+                                    <td>${cita.EspecialidadNombre || ""}</td>
+                                    <td>${cita.Motivo || ""}</td>
+                                    <td><span style="color: ${colorEstado}; font-weight: bold;">${cita.Estado || ""}</span></td>
                                 </tr>`;
                                 $tbody.append(fila);
                             });
