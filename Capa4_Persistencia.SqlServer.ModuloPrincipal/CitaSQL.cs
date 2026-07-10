@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
@@ -29,11 +29,13 @@ namespace Capa4_Persistencia.SqlServer.ModuloPrincipal
                 SqlCommand comandoSQL = accesoSQLServer.ObtenerComandoDeProcedimiento(procedimientoSQL);
                 comandoSQL.Parameters.Add(new SqlParameter("@pIdPaciente", idPaciente));
 
-                SqlDataReader resultadoSQL = comandoSQL.ExecuteReader();
-                while (resultadoSQL.Read())
+                using (SqlDataReader resultadoSQL = comandoSQL.ExecuteReader())
                 {
-                    cita = ObtenerCita(resultadoSQL);
-                    listaCitas.Add(cita);
+                    while (resultadoSQL.Read())
+                    {
+                        cita = ObtenerCita(resultadoSQL);
+                        listaCitas.Add(cita);
+                    }
                 }
             }
             catch (SqlException)
@@ -59,11 +61,13 @@ namespace Capa4_Persistencia.SqlServer.ModuloPrincipal
                 SqlCommand comandoSQL = accesoSQLServer.ObtenerComandoDeProcedimiento(procedimientoSQL);
                 comandoSQL.Parameters.Add(new SqlParameter("@pIdMedico", idMedico));
 
-                SqlDataReader resultadoSQL = comandoSQL.ExecuteReader();
-                while (resultadoSQL.Read())
+                using (SqlDataReader resultadoSQL = comandoSQL.ExecuteReader())
                 {
-                    cita = ObtenerCita(resultadoSQL);
-                    listaCitas.Add(cita);
+                    while (resultadoSQL.Read())
+                    {
+                        cita = ObtenerCita(resultadoSQL);
+                        listaCitas.Add(cita);
+                    }
                 }
             }
             catch (SqlException)
@@ -90,10 +94,12 @@ namespace Capa4_Persistencia.SqlServer.ModuloPrincipal
                 comandoSQL.Parameters.Add(new SqlParameter("@pFechaCita", fechaCita));
                 comandoSQL.Parameters.Add(new SqlParameter("@pHoraCita", horaCita));
 
-                SqlDataReader resultadoSQL = comandoSQL.ExecuteReader();
-                if (resultadoSQL.Read())
+                using (SqlDataReader resultadoSQL = comandoSQL.ExecuteReader())
                 {
-                    cita = ObtenerCita(resultadoSQL);
+                    if (resultadoSQL.Read())
+                    {
+                        cita = ObtenerCita(resultadoSQL);
+                    }
                 }
             }
             catch (SqlException)
@@ -123,11 +129,13 @@ namespace Capa4_Persistencia.SqlServer.ModuloPrincipal
                 comandoSQL.Parameters.Add(new SqlParameter("@pFechaFin", (object)fechaFin ?? DBNull.Value));
                 comandoSQL.Parameters.Add(new SqlParameter("@pEstadoCita", string.IsNullOrEmpty(estadoCita) ? DBNull.Value : (object)estadoCita));
 
-                SqlDataReader resultadoSQL = comandoSQL.ExecuteReader();
-                while (resultadoSQL.Read())
+                using (SqlDataReader resultadoSQL = comandoSQL.ExecuteReader())
                 {
-                    cita = ObtenerCita(resultadoSQL);
-                    listaCitas.Add(cita);
+                    while (resultadoSQL.Read())
+                    {
+                        cita = ObtenerCita(resultadoSQL);
+                        listaCitas.Add(cita);
+                    }
                 }
             }
             catch (SqlException)

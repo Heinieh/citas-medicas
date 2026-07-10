@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
@@ -26,12 +26,13 @@ namespace Capa4_Persistencia.SqlServer.ModuloPrincipal
             try
             {
                 SqlCommand comandoSQL = accesoSQLServer.ObtenerComandoDeProcedimiento(procedimientoSQL);
-                SqlDataReader resultadoSQL = comandoSQL.ExecuteReader();
-
-                while (resultadoSQL.Read())
+                using (SqlDataReader resultadoSQL = comandoSQL.ExecuteReader())
                 {
-                    medico = ObtenerMedico(resultadoSQL);
-                    listaMedicos.Add(medico);
+                    while (resultadoSQL.Read())
+                    {
+                        medico = ObtenerMedico(resultadoSQL);
+                        listaMedicos.Add(medico);
+                    }
                 }
             }
             catch (SqlException)
@@ -56,15 +57,16 @@ namespace Capa4_Persistencia.SqlServer.ModuloPrincipal
                 SqlCommand comandoSQL = accesoSQLServer.ObtenerComandoDeProcedimiento(procedimientoSQL);
                 comandoSQL.Parameters.Add(new SqlParameter("@pIdMedico", idMedico));
 
-                SqlDataReader resultadoSQL = comandoSQL.ExecuteReader();
-
-                if (resultadoSQL.Read())
+                using (SqlDataReader resultadoSQL = comandoSQL.ExecuteReader())
                 {
-                    medico = ObtenerMedico(resultadoSQL);
-                }
-                else
-                {
-                    throw new ExcepcionMedicoInvalido(ExcepcionMedicoInvalido.NO_EXISTE_REGISTRO);
+                    if (resultadoSQL.Read())
+                    {
+                        medico = ObtenerMedico(resultadoSQL);
+                    }
+                    else
+                    {
+                        throw new ExcepcionMedicoInvalido(ExcepcionMedicoInvalido.NO_EXISTE_REGISTRO);
+                    }
                 }
             }
             catch (ExcepcionMedicoInvalido ex)

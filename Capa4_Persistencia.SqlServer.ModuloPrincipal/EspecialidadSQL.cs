@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
@@ -26,12 +26,13 @@ namespace Capa4_Persistencia.SqlServer.ModuloPrincipal
             try
             {
                 SqlCommand comandoSQL = accesoSQLServer.ObtenerComandoDeProcedimiento(procedimientoSQL);
-                SqlDataReader resultadoSQL = comandoSQL.ExecuteReader();
-
-                while (resultadoSQL.Read())
+                using (SqlDataReader resultadoSQL = comandoSQL.ExecuteReader())
                 {
-                    especialidad = ObtenerEspecialidad(resultadoSQL);
-                    listaEspecialidades.Add(especialidad);
+                    while (resultadoSQL.Read())
+                    {
+                        especialidad = ObtenerEspecialidad(resultadoSQL);
+                        listaEspecialidades.Add(especialidad);
+                    }
                 }
             }
             catch (SqlException)
@@ -56,15 +57,16 @@ namespace Capa4_Persistencia.SqlServer.ModuloPrincipal
                 SqlCommand comandoSQL = accesoSQLServer.ObtenerComandoDeProcedimiento(procedimientoSQL);
                 comandoSQL.Parameters.Add(new SqlParameter("@pIdEspecialidad", especialidadId));
 
-                SqlDataReader resultadoSQL = comandoSQL.ExecuteReader();
-
-                if (resultadoSQL.Read())
+                using (SqlDataReader resultadoSQL = comandoSQL.ExecuteReader())
                 {
-                    especialidad = ObtenerEspecialidad(resultadoSQL);
-                }
-                else
-                {
-                    throw new ExcepcionEspecialidadInvalida(ExcepcionEspecialidadInvalida.NO_EXISTE_REGISTRO);
+                    if (resultadoSQL.Read())
+                    {
+                        especialidad = ObtenerEspecialidad(resultadoSQL);
+                    }
+                    else
+                    {
+                        throw new ExcepcionEspecialidadInvalida(ExcepcionEspecialidadInvalida.NO_EXISTE_REGISTRO);
+                    }
                 }
             }
             catch (ExcepcionEspecialidadInvalida ex)
