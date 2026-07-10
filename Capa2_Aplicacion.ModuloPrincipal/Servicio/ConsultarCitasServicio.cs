@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Capa2_Aplicacion.ModuloPrincipal.DTO;
 using Capa3_Dominio.ModuloPrincipal.Entidad;
@@ -13,6 +13,7 @@ namespace Capa2_Aplicacion.ModuloPrincipal.Servicio
         private CitaSQL citaSQL;
         private PacienteSQL pacienteSQL;
         private MedicoSQL medicoSQL;
+        private EspecialidadSQL especialidadSQL;
 
         public ConsultarCitasServicio()
         {
@@ -20,6 +21,7 @@ namespace Capa2_Aplicacion.ModuloPrincipal.Servicio
             citaSQL = new CitaSQL(accesoSQLServer);
             pacienteSQL = new PacienteSQL(accesoSQLServer);
             medicoSQL = new MedicoSQL(accesoSQLServer);
+            especialidadSQL = new EspecialidadSQL(accesoSQLServer);
         }
 
         public List<CitaDTO> buscarCitasPorFiltros(int idMedicoAutenticado, DateTime? fechaEspecifica, DateTime? fechaInicio, DateTime? fechaFin, String estadoCita)
@@ -42,6 +44,7 @@ namespace Capa2_Aplicacion.ModuloPrincipal.Servicio
                 {
                     cita.Paciente = pacienteSQL.buscarPorId(cita.Id_paciente);
                     cita.Medico = medicoSQL.BuscarPorId(cita.Id_medico);
+                    cita.Medico.Especialidad = especialidadSQL.BuscarPorId(cita.Medico.Id_especialidad);
 
                     CitaDTO citaDTO = new CitaDTO
                     {
@@ -53,7 +56,7 @@ namespace Capa2_Aplicacion.ModuloPrincipal.Servicio
                         Observaciones = cita.Observaciones,
 
                         Id_paciente = cita.Paciente.Id_paciente,
-                        PacienteDocumento = cita.Paciente.Tipo_documento,
+                        PacienteDocumento = cita.Paciente.Numero_documento,
                         PacienteNombres = cita.Paciente.Nombres,
                         PacienteApellidos = cita.Paciente.Apellidos,
 
