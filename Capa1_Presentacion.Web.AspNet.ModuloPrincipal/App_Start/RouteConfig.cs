@@ -16,7 +16,8 @@ namespace Capa1_Presentacion.Web.AspNet.ModuloPrincipal
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "ConsultarCitas", action = "PaginaConsultarCitas", id = UrlParameter.Optional }
+                // Aquí cambiamos ConsultarCitas por Home, y PaginaConsultarCitas por Index
+                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
         }
     }

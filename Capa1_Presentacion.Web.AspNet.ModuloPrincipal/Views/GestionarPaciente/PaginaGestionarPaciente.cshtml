@@ -1,11 +1,18 @@
 @{
     ViewBag.Title = "Gestionar Pacientes";
+    ViewBag.HeaderTitle = "👥 Gestionar Pacientes";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Gestionar Pacientes</h2>
+<div class="contenedor-principal">
+    <main class="tarjeta">
 
-<button class="btn btn-primary mb-3" onclick="abrirModalCrear()">Nuevo Paciente</button>
+        <div class="encabezado-formulario">
+            <h2>Gestionar Pacientes</h2>
+            <a href="@Url.Action("Index", "Home")" class="btn-volver">← Volver al Menú Principal</a>
+        </div>
+
+        <button class="btn btn-primary mb-3" onclick="abrirModalCrear()">Nuevo Paciente</button>
 
 <table class="table table-bordered table-striped" id="tablaPacientes">
     <thead>
@@ -116,12 +123,86 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-success">Aceptar</button>
+                    <button type="submit" class="btn-guardar-verde">Aceptar</button>
                 </div>
             </form>
         </div>
     </div>
-</div>@section scripts {
+</div>
+
+    </main>
+</div>
+
+@section styles {
+    <style>
+        /* Contenedor central y Tarjeta blanca */
+        .contenedor-principal {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+
+        .tarjeta {
+            background-color: #FFFFFF;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            margin-bottom: 25px;
+            padding: 25px 35px;
+        }
+
+        /* Alineación del Título y el Botón de volver */
+        .encabezado-formulario {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #EAECEE;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+            .encabezado-formulario h2 {
+                font-size: 20px;
+                color: #2C3E50;
+                margin: 0;
+            }
+
+        /* Estilo del botón gris de volver */
+        .btn-volver {
+            background-color: #95A5A6;
+            color: white;
+            padding: 6px 12px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 13px;
+            transition: background-color 0.3s ease;
+        }
+
+            .btn-volver:hover {
+                background-color: #7F8C8D;
+                color: white;
+                text-decoration: none;
+            }
+
+        /* Botón Aceptar Verde Personalizado */
+        .btn-guardar-verde {
+            background-color: #2ECC71;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+            .btn-guardar-verde:hover {
+                background-color: #27AE60;
+            }
+    </style>
+}
+
+@section scripts {
     <script>
         $(document).ready(function () {
             consultarPacientes();
@@ -223,7 +304,7 @@
         }
 
         function abrirModalCrear() {
-            $('#modalPacienteLabel').text("Nuevo Paciente");
+            $('#modalPacienteLabel').text("Registrar Nuevo Paciente");
             $('#txtIdPaciente').val(0);
             $('#formPaciente')[0].reset();
             $('#txtTipoSangre').val("No especificado");
@@ -233,7 +314,7 @@
 
         // Se usa string "null" o undefined si la db trajo valores vacios, hay que limpiarlos
         function abrirModalEditar(id, tipoDoc, numDoc, nombres, apellidos, sexo, fechaNac, dir, telf, correo, obs, tipoSangre) {
-            $('#modalPacienteLabel').text("Modificar Paciente");
+            $('#modalPacienteLabel').text("Modificar Datos del Paciente");
 
             $('#txtIdPaciente').val(id);
             $('#txtTipoDocumento').val(tipoDoc);

@@ -8,14 +8,13 @@ namespace Capa1_Presentacion.Web.AspNet.ModuloPrincipal.Controllers
 {
     public class RegistrarCitasController : Controller
     {
-
-        public ActionResult RegistrarCita()
+        public ActionResult PaginaRegistrarCita()
         {
             return View();
         }
 
         [HttpPost]
-        public JsonResult RegistrarCitaMedica(CitaDTO citaDTO) 
+        public JsonResult RegistrarCitaMedica(CitaDTO citaDTO)
         {
             Boolean esCorrecto;
             String mensaje;
@@ -23,7 +22,7 @@ namespace Capa1_Presentacion.Web.AspNet.ModuloPrincipal.Controllers
             RegistrarCitasServicio registrarCitasServicio = new RegistrarCitasServicio();
 
             try
-            { 
+            {
                 registrarCitasServicio.GuardarCita(citaDTO);
 
                 esCorrecto = true;
