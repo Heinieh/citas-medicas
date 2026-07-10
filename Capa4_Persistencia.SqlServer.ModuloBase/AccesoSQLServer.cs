@@ -66,8 +66,14 @@ namespace Capa4_Persistencia.SqlServer.ModuloBase
         {
             try
             {
-                transaccion.Rollback();
-                conexion.Close();
+                if (transaccion != null)
+                {
+                    transaccion.Rollback();
+                }
+                if (conexion != null && conexion.State != System.Data.ConnectionState.Closed)
+                {
+                    conexion.Close();
+                }
             }
             catch (Exception err)
             {
