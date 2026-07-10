@@ -28,11 +28,13 @@ namespace Capa4_Persistencia.SqlServer.ModuloPrincipal
                 SqlCommand comandoSQL = accesoSQLServer.ObtenerComandoDeProcedimiento(procedimientoSQL);
                 comandoSQL.Parameters.Add(new SqlParameter("@pCriterio", string.IsNullOrEmpty(criterio) ? "" : criterio));
 
-                SqlDataReader resultadoSQL = comandoSQL.ExecuteReader();
-                while (resultadoSQL.Read())
+                using (SqlDataReader resultadoSQL = comandoSQL.ExecuteReader())
                 {
-                    paciente = ObtenerPaciente(resultadoSQL);
-                    listaPacientes.Add(paciente);
+                    while (resultadoSQL.Read())
+                    {
+                        paciente = ObtenerPaciente(resultadoSQL);
+                        listaPacientes.Add(paciente);
+                    }
                 }
             }
             catch (SqlException)
@@ -57,14 +59,16 @@ namespace Capa4_Persistencia.SqlServer.ModuloPrincipal
                 SqlCommand comandoSQL = accesoSQLServer.ObtenerComandoDeProcedimiento(procedimientoSQL);
                 comandoSQL.Parameters.Add(new SqlParameter("@pIdPaciente", idPaciente));
 
-                SqlDataReader resultadoSQL = comandoSQL.ExecuteReader();
-                if (resultadoSQL.Read())
+                using (SqlDataReader resultadoSQL = comandoSQL.ExecuteReader())
                 {
-                    paciente = ObtenerPaciente(resultadoSQL);
-                }
-                else
-                {
-                    throw new ExcepcionPacienteInvalido(ExcepcionPacienteInvalido.NO_EXISTE_REGISTRO);
+                    if (resultadoSQL.Read())
+                    {
+                        paciente = ObtenerPaciente(resultadoSQL);
+                    }
+                    else
+                    {
+                        throw new ExcepcionPacienteInvalido(ExcepcionPacienteInvalido.NO_EXISTE_REGISTRO);
+                    }
                 }
             }
             catch (ExcepcionPacienteInvalido ex)
@@ -93,10 +97,12 @@ namespace Capa4_Persistencia.SqlServer.ModuloPrincipal
                 SqlCommand comandoSQL = accesoSQLServer.ObtenerComandoDeProcedimiento(procedimientoSQL);
                 comandoSQL.Parameters.Add(new SqlParameter("@pDocumento", documento));
 
-                SqlDataReader resultadoSQL = comandoSQL.ExecuteReader();
-                if (resultadoSQL.Read())
+                using (SqlDataReader resultadoSQL = comandoSQL.ExecuteReader())
                 {
-                    paciente = ObtenerPaciente(resultadoSQL);
+                    if (resultadoSQL.Read())
+                    {
+                        paciente = ObtenerPaciente(resultadoSQL);
+                    }
                 }
             }
             catch (SqlException)
