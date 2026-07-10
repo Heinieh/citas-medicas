@@ -1,0 +1,138 @@
+@{
+    ViewBag.Title = "Consultar Citas Médicas";
+    ViewBag.HeaderTitle = "🔍 Consultar Citas Médicas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section id="consulta-citas">
+    <h2>Filtros de Búsqueda</h2>
+
+    <div class="filtros-container">
+        <form id="formConsulta" class="filtros-grid">
+            <div class="form-group">
+                <label class="filtro-label">Fecha de Atención:</label>
+                <input type="date" id="fecha-atencion" name="fecha-atencion">
+            </div>
+
+            <div class="form-group">
+                <label for="estado-cita">Estado de la Cita:</label>
+                <select id="estado-cita" name="estado-cita">
+                    <option value="">-- Todos --</option>
+                    <option value="Programada">Programada</option>
+                    <option value="Atendida">Atendida</option>
+                    <option value="Cancelada">Cancelada</option>
+                </select>
+            </div>
+
+            <div class="form-buttons">
+                <button type="submit" class="btn-primary">Consultar</button>
+                <button type="reset" class="btn-secondary">Limpiar Formulario</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="table-container">
+        <table id="tablaCitas">
+            <thead>
+                <tr>
+                    <th>Fecha Cita</th>
+                    <th>Hora</th>
+                    <th>Paciente</th>
+                    <th>N° Documento</th>
+                    <th>Especialidad</th>
+                    <th>Motivo</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="7" style="text-align: center; color: #7f8c8d;">Utilice los filtros para realizar una búsqueda.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <a href="@Url.Action("Index", "Home")" class="back-link">← Volver al Menú Principal</a>
+</section>
+
+@section scripts {
+<script>
+    $(document).ready(function () {
+        $('#formConsulta').submit(function (e) {
+            e.preventDefault();
+
+            const fecha = $('#fecha-atencion').val();
+            const estado = $('#estado-cita').val();
+
+            // RN-03: Validar que al menos uno tenga datos
+            if (!fecha && !estado) {
+                alert("⚠️ Debe seleccionar al menos un criterio de búsqueda (Fecha o Estado).");
+                return;
+            }
+
+            // Realizar llamada AJAX
+            $.ajax({
+                url: '@Url.Action("BuscarCitas", "ConsultarCitas")',
+                type: 'GET',
+                data: { fecha: fecha, estado: estado },
+                dataType: 'json',
+                success: function (response) {
+                    const $tbody = $('#tablaCitas tbody');
+                    $tbody.empty();
+
+                    if (response.estadoCorrecto) {
+                        if (response.data && response.data.length > 0) {
+                            $.each(response.data, function (i, cita) {
+                                // Formatear fecha JSON /Date(milliseconds)/
+                                let fechaCitaStr = "";
+                                if (cita.FechaCita) {
+                                    const ms = parseInt(cita.FechaCita.replace(/\/Date\((-?\d+)\)\//, '$1'));
+                                    const d = new Date(ms);
+                                    const dia = String(d.getDate()).padStart(2, '0');
+                                    const mes = String(d.getMonth() + 1).padStart(2, '0');
+                                    const anio = d.getFullYear();
+                                    fechaCitaStr = `${dia}/${mes}/${anio}`;
+                                }
+
+                                // Formatear hora (TimeSpan)
+                                let horaStr = "";
+                                if (cita.HoraCita) {
+                                    if (typeof cita.HoraCita === "object") {
+                                        const h = String(cita.HoraCita.Hours).padStart(2, '0');
+                                        const m = String(cita.HoraCita.Minutes).padStart(2, '0');
+                                        horaStr = `${h}:${m}`;
+                                    } else {
+                                        horaStr = cita.HoraCita;
+                                    }
+                                }
+
+                                let colorEstado = "#2e86c1";
+                                if (cita.EstadoCita && cita.EstadoCita.toLowerCase() === "atendida") colorEstado = "#239b56";
+                                if (cita.EstadoCita && cita.EstadoCita.toLowerCase() === "cancelada") colorEstado = "#e74c3c";
+
+                                const fila = `<tr>
+                                    <td>${fechaCitaStr}</td>
+                                    <td>${horaStr}</td>
+                                    <td>${cita.NombrePaciente}</td>
+                                    <td>${cita.DocumentoPaciente}</td>
+                                    <td>${cita.EspecialidadMedica}</td>
+                                    <td>${cita.MotivoAtencion}</td>
+                                    <td><span style="color: ${colorEstado}; font-weight: bold;">${cita.EstadoCita}</span></td>
+                                </tr>`;
+                                $tbody.append(fila);
+                            });
+                        } else {
+                            $tbody.append('<tr><td colspan="7" style="text-align: center; color: #e74c3c;">No se encontraron citas con los filtros seleccionados.</td></tr>');
+                        }
+                    } else {
+                        alert("Error: " + response.mensajeError);
+                    }
+                },
+                error: function () {
+                    alert("Error al consultar las citas.");
+                }
+            });
+        });
+    });
+</script>
+}

@@ -1,0 +1,25 @@
+<Solution>
+  <Folder Name="/ArquitecturaNCapasMVC/" />
+  <Folder Name="/ArquitecturaNCapasMVC/Capa1_Presentacion/" />
+  <Folder Name="/ArquitecturaNCapasMVC/Capa1_Presentacion/Web/" />
+  <Folder Name="/ArquitecturaNCapasMVC/Capa1_Presentacion/Web/AspNet/" />
+  <Folder Name="/ArquitecturaNCapasMVC/Capa1_Presentacion/Web/AspNet/ModuloPrincipal/">
+    <Project Path="Capa1_Presentacion.Web.AspNet.ModuloPrincipal/Capa1_Presentacion.Web.AspNet.ModuloPrincipal.csproj" Id="4a5dce6d-9323-453d-ae8b-8aaa84d520a6" />
+  </Folder>
+  <Folder Name="/ArquitecturaNCapasMVC/Capa2_Aplicacion/" />
+  <Folder Name="/ArquitecturaNCapasMVC/Capa2_Aplicacion/ModuloPrincipal/">
+    <Project Path="Capa2_Aplicacion.ModuloPrincipal/Capa2_Aplicacion.ModuloPrincipal.csproj" Id="ee9fae18-6120-4a39-8dab-96ddab27c63a" />
+  </Folder>
+  <Folder Name="/ArquitecturaNCapasMVC/Capa3_Dominio/" />
+  <Folder Name="/ArquitecturaNCapasMVC/Capa3_Dominio/ModuloPrincipal/">
+    <Project Path="Capa3_Dominio.ModuloPrincipal/Capa3_Dominio.ModuloPrincipal.csproj" Id="096242d4-4567-41ce-8d33-11a479a29f93" />
+  </Folder>
+  <Folder Name="/ArquitecturaNCapasMVC/Capa4_Persistencia/" />
+  <Folder Name="/ArquitecturaNCapasMVC/Capa4_Persistencia/SqlServer/" />
+  <Folder Name="/ArquitecturaNCapasMVC/Capa4_Persistencia/SqlServer/ModuloBase/">
+    <Project Path="Capa4_Persistencia.SqlServer.ModuloBase/Capa4_Persistencia.SqlServer.ModuloBase.csproj" Id="180230c9-6a87-4761-b1bb-6f29daf076c7" />
+  </Folder>
+  <Folder Name="/ArquitecturaNCapasMVC/Capa4_Persistencia/SqlServer/ModuloPrincipal/">
+    <Project Path="Capa4_Persistencia.SqlServer.ModuloPrincipal/Capa4_Persistencia.SqlServer.ModuloPrincipal.csproj" Id="1fc16a61-3471-468f-890f-50be4296aed2" />
+  </Folder>
+</Solution>

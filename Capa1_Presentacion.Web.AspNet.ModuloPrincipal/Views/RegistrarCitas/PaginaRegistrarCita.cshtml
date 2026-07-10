@@ -1,0 +1,338 @@
+﻿@{
+    ViewBag.Title = "Registrar Cita";
+    ViewBag.HeaderTitle = "📅 Registrar Cita";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="contenedor-principal">
+    <main class="tarjeta">
+        <div class="encabezado-formulario">
+            <h2>Registrar Nueva Cita</h2>
+            <a href="@Url.Action("Index", "Home")" class="btn-volver">← Volver al Menú Principal</a>
+        </div>
+
+        <div id="contenedor-mensajes"></div>
+
+        <form id="form-registrar-cita">
+
+            <fieldset class="seccion-formulario">
+                <legend>Datos del Paciente</legend>
+                <label for="buscar-paciente">DNI o Nombre Completo: *</label>
+                <div class="grupo-busqueda">
+                    <input type="text" id="buscar-paciente" name="paciente" placeholder="Ej: 71234567" required>
+                    <button type="button" id="btn-buscar-paciente" class="btn-accion">Buscar</button>
+                </div>
+                <span id="estado-paciente"></span>
+
+                <div id="info-paciente-detallada" class="caja-info-paciente" style="display: none;">
+                </div>
+            </fieldset>
+
+            <fieldset class="seccion-formulario">
+                <legend>Detalles de la Cita</legend>
+                <div class="fila-formulario">
+                    <div class="columna-formulario">
+                        <label for="especialidad">Especialidad Médica: *</label>
+                        <select id="especialidad" name="especialidad" required>
+                            <option value="" disabled selected>Seleccione una especialidad</option>
+                            <option value="cardiologia">Cardiología</option>
+                            <option value="pediatria">Pediatría</option>
+                            <option value="medicina_general">Medicina General</option>
+                        </select>
+                    </div>
+                    <div class="columna-formulario">
+                        <label for="medico">Médico Especialista: *</label>
+                        <select id="medico" name="medico" required disabled>
+                            <option value="" disabled selected>Seleccione primero especialidad</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="fila-formulario">
+                    <div class="columna-formulario">
+                        <label for="fecha">Fecha de la Cita: *</label>
+                        <input type="date" id="fecha" name="fecha" required>
+                    </div>
+                    <div class="columna-formulario">
+                        <label for="hora">Hora de la Cita: *</label>
+                        <select id="hora" name="hora" required disabled>
+                            <option value="" disabled selected>Seleccione médico y fecha</option>
+                        </select>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset class="seccion-formulario">
+                <legend>Información de Atención</legend>
+                <label for="motivo">Motivo de Atención: *</label>
+                <textarea id="motivo" name="motivo" rows="2" placeholder="Describa el motivo" required></textarea>
+
+                <label for="observaciones">Observaciones (Opcional):</label>
+                <textarea id="observaciones" name="observaciones" rows="2"></textarea>
+            </fieldset>
+
+            <div class="acciones-formulario">
+                <button type="submit" id="btn-registrar" class="btn-guardar">Confirmar y Registrar Cita</button>
+                <button type="reset" id="btn-cancelar" class="btn-limpiar">Limpiar Formulario</button>
+            </div>
+
+        </form>
+    </main>
+</div>
+
+@section styles {
+    <style>
+        /* Reseteo básico: Es posible que tu Layout ya tenga un reseteo, si es así, puedes omitirlo */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Contenedor central para limitar el ancho */
+        .contenedor-principal {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+
+        /* Estilo común para los bloques blancos (Tarjetas) */
+        .tarjeta {
+            background-color: #FFFFFF;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            margin-bottom: 25px;
+            padding: 25px 35px;
+        }
+
+        /* Botones Superiores */
+        .btn-volver {
+            background-color: #95A5A6;
+            color: white;
+            padding: 6px 12px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 13px;
+        }
+
+        /* Área del título del formulario */
+        .encabezado-formulario {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #EAECEE;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+            .encabezado-formulario h2 {
+                font-size: 20px;
+                color: #2C3E50;
+            }
+
+        /* Estilos de Formulario */
+        fieldset.seccion-formulario {
+            border: none;
+            margin-bottom: 25px;
+        }
+
+        legend {
+            font-size: 16px;
+            font-weight: bold;
+            color: #2980B9;
+            margin-bottom: 15px;
+            width: 100%;
+            border-bottom: 1px solid #EAECEE;
+            padding-bottom: 5px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #BDC3C7;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 15px;
+            outline: none;
+        }
+
+            input:focus, select:focus, textarea:focus {
+                border-color: #3498DB;
+                box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+            }
+
+        /* Inputs en línea (DNI + Botón Buscar) */
+        .grupo-busqueda {
+            display: flex;
+            gap: 10px;
+        }
+
+            .grupo-busqueda input {
+                margin-bottom: 0;
+            }
+
+        /* Sistema de columnas para el formulario */
+        .fila-formulario {
+            display: flex;
+            gap: 20px;
+        }
+
+        .columna-formulario {
+            flex: 1;
+        }
+
+        /* Botones de Acción del Formulario */
+        .acciones-formulario {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn-accion, .btn-guardar {
+            background-color: #3498DB;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+            .btn-accion:hover, .btn-guardar:hover {
+                background-color: #2980B9;
+            }
+
+        .btn-limpiar {
+            background-color: #ECF0F1;
+            color: #7F8C8D;
+            border: 1px solid #BDC3C7;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+            .btn-limpiar:hover {
+                background-color: #D5D8DC;
+            }
+
+        /* Caja de respuesta de paciente verificado */
+        .caja-info-paciente {
+            margin-top: 10px;
+            padding: 15px;
+            background-color: #F8F9FA;
+            border-left: 4px solid #2ECC71;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+    </style>
+}
+
+@section scripts {
+    <script>
+    $(document).ready(function () {
+
+        // 1. Simulación o AJAX para buscar un paciente
+        $('#btn-buscar-paciente').click(function () {
+            const documento = $('#buscar-paciente').val().trim();
+            if (documento === "") {
+                alert("Ingrese el DNI del paciente.");
+                return;
+            }
+
+            // Aquí realizarías tu petición AJAX, similar al modelo de Gestión de Pacientes.
+            // URL sugerida: '@Url.Action("BuscarPacientePorDNI", "GestionarPaciente")'
+
+            // Simulación visual de respuesta
+            $('#info-paciente-detallada').show().html(
+                '<strong>Paciente encontrado:</strong> Juan Perez (DNI: ' + documento + ')'
+            );
+        });
+
+        // 2. Desbloquear médicos según la especialidad seleccionada
+        $('#especialidad').change(function () {
+            const especialidad = $(this).val();
+            const $medico = $('#medico');
+
+            if(especialidad) {
+                $medico.prop('disabled', false);
+                $medico.empty().append('<option value="" disabled selected>Seleccione médico</option>');
+
+                // Aquí podrías usar AJAX para cargar médicos reales según especialidad
+                if(especialidad === 'cardiologia') {
+                    $medico.append('<option value="1">Dr. House</option>');
+                } else if(especialidad === 'pediatria') {
+                    $medico.append('<option value="2">Dra. Polo</option>');
+                } else {
+                    $medico.append('<option value="3">Dr. Simi</option>');
+                }
+            } else {
+                $medico.prop('disabled', true);
+            }
+        });
+
+        // 3. Desbloquear horas si hay fecha y médico seleccionado
+        $('#fecha, #medico').change(function () {
+            const fecha = $('#fecha').val();
+            const medico = $('#medico').val();
+            const $hora = $('#hora');
+
+            if(fecha && medico) {
+                $hora.prop('disabled', false);
+                $hora.empty().append('<option value="" disabled selected>Seleccione hora</option>');
+                $hora.append('<option value="08:00">08:00 AM</option>');
+                $hora.append('<option value="10:00">10:00 AM</option>');
+            } else {
+                $hora.prop('disabled', true);
+            }
+        });
+
+        // 4. Enviar formulario por AJAX
+        $('#form-registrar-cita').submit(function (e) {
+            e.preventDefault();
+
+            const cita = {
+                IdPaciente: 1,
+                IdMedico: $('#medico').val(),
+                FechaCita: $('#fecha').val(),
+                HoraCita: $('#hora').val(),
+                Motivo: $('#motivo').val(),
+                Observaciones: $('#observaciones').val()
+            };
+
+            $.ajax({
+                url: '@Url.Action("RegistrarCitaMedica", "RegistrarCitas")',
+                type: 'POST',
+                data: JSON.stringify(cita),
+                contentType: 'application/json',
+                dataType: 'json',
+                success: function (response) {
+                    if (response.estadoCorrecto) {
+                        alert("✅ " + response.mensajeError);
+                        $('#form-registrar-cita')[0].reset();
+                        $('#info-paciente-detallada').hide();
+                        $('#medico, #hora').prop('disabled', true);
+                    } else {
+                        alert("⚠️ Error: " + response.mensajeError);
+                    }
+                },
+                error: function () {
+                    alert("Error crítico al intentar comunicarse con el servidor.");
+                }
+            });
+        });
+    </script>
+}

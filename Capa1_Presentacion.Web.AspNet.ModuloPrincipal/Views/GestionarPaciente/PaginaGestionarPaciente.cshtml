@@ -1,0 +1,320 @@
+@{
+    ViewBag.Title = "Gestionar Pacientes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Gestionar Pacientes</h2>
+
+<button class="btn btn-primary mb-3" onclick="abrirModalCrear()">Nuevo Paciente</button>
+
+<table class="table table-bordered table-striped" id="tablaPacientes">
+    <thead>
+        <tr>
+            <th>Documento</th>
+            <th>Nombres</th>
+            <th>Apellidos</th>
+            <th>Sexo</th>
+            <th>F. Nacimiento</th>
+            <th>Teléfono</th>
+            <th>T. Sangre</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<div class="modal fade" id="modalPaciente" tabindex="-1" role="dialog" aria-labelledby="modalPacienteLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <form id="formPaciente">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalPacienteLabel">Paciente</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="txtIdPaciente" />
+                    <input type="hidden" id="modoOperacion" />
+                    
+                    <div class="row">
+                        <div class="col-md-3 form-group">
+                            <label for="txtTipoDocumento">Tipo Doc. <span class="text-danger">*</span></label>
+                            <select id="txtTipoDocumento" class="form-control" required>
+                                <option value="">-- Seleccione --</option>
+                                <option value="DNI">DNI</option>
+                                <option value="Pasaporte">Pasaporte</option>
+                                <option value="CE">Carnet de Extranjería</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 form-group">
+                            <label for="txtNumeroDocumento">Nº Documento <span class="text-danger">*</span></label>
+                            <input type="text" id="txtNumeroDocumento" class="form-control" required />
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label for="txtSexo">Sexo <span class="text-danger">*</span></label>
+                            <select id="txtSexo" class="form-control" required>
+                                <option value="">-- Seleccione --</option>
+                                <option value="M">Masculino</option>
+                                <option value="F">Femenino</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label for="txtNombres">Nombres <span class="text-danger">*</span></label>
+                            <input type="text" id="txtNombres" class="form-control" required />
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label for="txtApellidos">Apellidos <span class="text-danger">*</span></label>
+                            <input type="text" id="txtApellidos" class="form-control" required />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 form-group">
+                            <label for="txtFechaNacimiento">F. Nacimiento <span class="text-danger">*</span></label>
+                            <input type="date" id="txtFechaNacimiento" class="form-control" required />
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label for="txtTelefono">Teléfono <span class="text-danger">*</span></label>
+                            <input type="text" id="txtTelefono" class="form-control" required />
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label for="txtCorreo">Correo <span class="text-danger">*</span></label>
+                            <input type="email" id="txtCorreo" class="form-control" required />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 form-group">
+                            <label for="txtTipoSangre">Tipo de Sangre <span class="text-danger">*</span></label>
+                            <select id="txtTipoSangre" class="form-control" required>
+                                <option value="No especificado">No especificado</option>
+                                <option value="O+">O Rh+</option>
+                                <option value="O-">O Rh-</option>
+                                <option value="A+">A Rh+</option>
+                                <option value="A-">A Rh-</option>
+                                <option value="B+">B Rh+</option>
+                                <option value="B-">B Rh-</option>
+                                <option value="AB+">AB Rh+</option>
+                                <option value="AB-">AB Rh-</option>
+                            </select>
+                        </div>
+                        <div class="col-md-8 form-group">
+                            <label for="txtDireccion">Dirección</label>
+                            <input type="text" id="txtDireccion" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="txtObservaciones">Observaciones</label>
+                        <textarea id="txtObservaciones" class="form-control" rows="2"></textarea>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success">Aceptar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>@section scripts {
+    <script>
+        $(document).ready(function () {
+            consultarPacientes();
+
+            // Evento submit del formulario
+            $('#formPaciente').submit(function (e) {
+                e.preventDefault();
+
+                // Recoger datos del formulario
+                let rawFecha = $('#txtFechaNacimiento').val();
+
+                let paciente = {
+                    Id_paciente: $('#txtIdPaciente').val() || 0,
+                    Tipo_documento: $('#txtTipoDocumento').val(),
+                    Numero_documento: $('#txtNumeroDocumento').val().trim(),
+                    Nombres: $('#txtNombres').val().trim(),
+                    Apellidos: $('#txtApellidos').val().trim(),
+                    Sexo: $('#txtSexo').val(),
+                    Fecha_nacimiento: rawFecha,
+                    Direccion: $('#txtDireccion').val().trim() || null,
+                    Telefono: $('#txtTelefono').val().trim(),
+                    Correo: $('#txtCorreo').val().trim(),
+                    Observaciones: $('#txtObservaciones').val().trim() || null,
+                    Tipo_sangre: $('#txtTipoSangre').val()
+                };
+
+                let modo = $('#modoOperacion').val();
+                if (modo === 'crear') {
+                    crearPaciente(paciente);
+                } else {
+                    modificarPaciente(paciente);
+                }
+            });
+        });
+
+        function consultarPacientes() {
+            $.ajax({
+                url: '@Url.Action("ListarPacientes", "GestionarPaciente")',
+                type: 'GET',
+                dataType: 'json',
+                success: function (dataRetorno) {
+                    var $tbody = $('#tablaPacientes tbody');
+                    $tbody.empty();
+
+                    if (dataRetorno.estadoCorrecto) {
+                        if (dataRetorno.data && dataRetorno.data.length > 0) {
+                            $.each(dataRetorno.data, function (i, paciente) {
+                                // Formatear fecha para mostrar en tabla y para inyectar en el input date
+                                let fechaTabla = "";
+                                let fechaInput = "";
+                                if (paciente.Fecha_nacimiento) {
+                                    const ms = parseInt(paciente.Fecha_nacimiento.replace(/\/Date\((-?\d+)\)\//, '$1'));
+                                    const d = new Date(ms);
+                                    const dia = String(d.getDate()).padStart(2, '0');
+                                    const mes = String(d.getMonth() + 1).padStart(2, '0');
+                                    const anio = d.getFullYear();
+                                    fechaTabla = `${dia}/${mes}/${anio}`;
+                                    fechaInput = `${anio}-${mes}-${dia}`;
+                                }
+
+                                var fila = '<tr>' +
+                                    '<td>' + paciente.Tipo_documento + ' ' + paciente.Numero_documento + '</td>' +
+                                    '<td>' + paciente.Nombres + '</td>' +
+                                    '<td>' + paciente.Apellidos + '</td>' +
+                                    '<td>' + (paciente.Sexo === 'M' ? 'Masculino' : 'Femenino') + '</td>' +
+                                    '<td>' + fechaTabla + '</td>' +
+                                    '<td>' + paciente.Telefono + '</td>' +
+                                    '<td>' + paciente.Tipo_sangre + '</td>' +
+                                    '<td>' +
+                                        '<button class="btn btn-sm btn-info mr-1" onclick="abrirModalEditar(' +
+                                            paciente.Id_paciente + ', \'' +
+                                            paciente.Tipo_documento + '\', \'' +
+                                            paciente.Numero_documento + '\', \'' +
+                                            paciente.Nombres + '\', \'' +
+                                            paciente.Apellidos + '\', \'' +
+                                            paciente.Sexo + '\', \'' +
+                                            fechaInput + '\', \'' +
+                                            paciente.Direccion + '\', \'' +
+                                            paciente.Telefono + '\', \'' +
+                                            paciente.Correo + '\', \'' +
+                                            paciente.Observaciones + '\', \'' +
+                                            paciente.Tipo_sangre + '\')">Modificar</button>' +
+                                        '<button class="btn btn-sm btn-danger ml-1" onclick="eliminarPaciente(' + paciente.Id_paciente + ')">Eliminar</button>' +
+                                    '</td>' +
+                                    '</tr>';
+                                $tbody.append(fila);
+                            });
+                        } else {
+                            $tbody.html('<tr><td colspan="8" class="text-center text-muted">No hay pacientes registrados.</td></tr>');
+                        }
+                    } else {
+                        alert(dataRetorno.mensajeError);
+                    }
+                },
+                error: function () {
+                    alert("Error al cargar pacientes.");
+                }
+            });
+        }
+
+        function abrirModalCrear() {
+            $('#modalPacienteLabel').text("Nuevo Paciente");
+            $('#txtIdPaciente').val(0);
+            $('#formPaciente')[0].reset();
+            $('#txtTipoSangre').val("No especificado");
+            $('#modoOperacion').val('crear');
+            $('#modalPaciente').modal('show');
+        }
+
+        // Se usa string "null" o undefined si la db trajo valores vacios, hay que limpiarlos
+        function abrirModalEditar(id, tipoDoc, numDoc, nombres, apellidos, sexo, fechaNac, dir, telf, correo, obs, tipoSangre) {
+            $('#modalPacienteLabel').text("Modificar Paciente");
+
+            $('#txtIdPaciente').val(id);
+            $('#txtTipoDocumento').val(tipoDoc);
+            $('#txtNumeroDocumento').val(numDoc);
+            $('#txtNombres').val(nombres);
+            $('#txtApellidos').val(apellidos);
+            $('#txtSexo').val(sexo);
+            $('#txtFechaNacimiento').val(fechaNac);
+            $('#txtDireccion').val(dir !== 'null' ? dir : '');
+            $('#txtTelefono').val(telf);
+            $('#txtCorreo').val(correo);
+            $('#txtObservaciones').val(obs !== 'null' ? obs : '');
+            $('#txtTipoSangre').val(tipoSangre !== 'null' ? tipoSangre : 'No especificado');
+
+            $('#modoOperacion').val('modificar');
+            $('#modalPaciente').modal('show');
+        }
+
+        function crearPaciente(paciente) {
+            $.ajax({
+                url: '@Url.Action("RegistrarPaciente", "GestionarPaciente")',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(paciente),
+                success: function (respuesta) {
+                    if (respuesta.estadoCorrecto) {
+                        $('#modalPaciente').modal('hide');
+                        alert("Paciente registrado correctamente.");
+                        consultarPacientes();
+                    } else {
+                        alert("Error: " + respuesta.mensajeError);
+                    }
+                },
+                error: function () {
+                    alert("Error al crear paciente.");
+                }
+            });
+        }
+
+        function modificarPaciente(paciente) {
+            $.ajax({
+                url: '@Url.Action("ModificarPaciente", "GestionarPaciente")',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(paciente),
+                success: function (respuesta) {
+                    if (respuesta.estadoCorrecto) {
+                        $('#modalPaciente').modal('hide');
+                        alert("Paciente modificado correctamente.");
+                        consultarPacientes();
+                    } else {
+                        alert("Error: " + respuesta.mensajeError);
+                    }
+                },
+                error: function () {
+                    alert("Error al modificar paciente.");
+                }
+            });
+        }
+
+        function eliminarPaciente(idPaciente) {
+            if (confirm("¿Está seguro de eliminar este paciente?")) {
+                let datos = { Id_paciente: idPaciente };
+                $.ajax({
+                    url: '@Url.Action("EliminarPaciente", "GestionarPaciente")',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(datos),
+                    success: function (respuesta) {
+                        if (respuesta.estadoCorrecto) {
+                            alert("Paciente eliminado correctamente.");
+                            consultarPacientes();
+                        } else {
+                            alert("Error: " + respuesta.mensajeError);
+                        }
+                    },
+                    error: function () {
+                        alert("Error al eliminar paciente.");
+                    }
+                });
+            }
+        }
+    </script>
+}

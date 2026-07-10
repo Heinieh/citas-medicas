@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Sistema de Gestión de Citas</title>
+    <link rel="stylesheet" href="~/Content/consultar-citas.css">
+    @RenderSection("styles", required: false)
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>@ViewBag.HeaderTitle</h1>
+            <nav style="margin-top: 10px; display: flex; gap: 10px; font-size: 14px; font-weight: 600;">
+                <a href="@Url.Action("Index", "Home")" style="color: #3498DB; text-decoration: none;">🏠 Inicio</a>
+                <span style="color: #ccc;">|</span>
+                <a href="@Url.Action("PaginaConsultarCitas", "ConsultarCitas")" style="color: #3498DB; text-decoration: none;">🔍 Consultar Citas</a>
+                <span style="color: #ccc;">|</span>
+                <a href="@Url.Action("PaginaGestionarPaciente", "GestionarPaciente")" style="color: #3498DB; text-decoration: none;">👥 Gestionar Pacientes</a>
+            </nav>
+            <div class="usuario-info">
+                <p>Usuario: <strong>admin</strong></p>
+                <a href="#" class="cerrarsesion-btn">Cerrar Sesión</a>
+            </div>
+        </header>
+
+        <main>
+            @RenderBody()
+        </main>
+
+        <footer>
+            <p>&copy; @DateTime.Now.Year Sistema de Gestión de Citas Médicas. Trujillo, Perú.</p>
+        </footer>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>
