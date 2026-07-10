@@ -1,4 +1,4 @@
-﻿@{
+@{
     ViewBag.Title = "Registrar Cita";
     ViewBag.HeaderTitle = "📅 Registrar Cita";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -244,22 +244,45 @@
 @section scripts {
     <script>
     $(document).ready(function () {
+        let selectedPacienteId = null;
 
-        // 1. Simulación o AJAX para buscar un paciente
+        // 1. AJAX para buscar un paciente
         $('#btn-buscar-paciente').click(function () {
-            const documento = $('#buscar-paciente').val().trim();
-            if (documento === "") {
-                alert("Ingrese el DNI del paciente.");
+            const criterio = $('#buscar-paciente').val().trim();
+            if (criterio === "") {
+                alert("Ingrese el DNI o nombre del paciente para buscar.");
                 return;
             }
 
-            // Aquí realizarías tu petición AJAX, similar al modelo de Gestión de Pacientes.
-            // URL sugerida: '@Url.Action("BuscarPacientePorDNI", "GestionarPaciente")'
-
-            // Simulación visual de respuesta
-            $('#info-paciente-detallada').show().html(
-                '<strong>Paciente encontrado:</strong> Juan Perez (DNI: ' + documento + ')'
-            );
+            $.ajax({
+                url: '@Url.Action("BuscarPacientes", "RegistrarCitas")',
+                type: 'GET',
+                data: { criterio: criterio },
+                dataType: 'json',
+                success: function (response) {
+                    const $info = $('#info-paciente-detallada');
+                    if (response.estadoCorrecto) {
+                        if (response.data && response.data.length > 0) {
+                            const paciente = response.data[0];
+                            selectedPacienteId = paciente.Id_paciente;
+                            $info.css({ 'color': '#27ae60', 'font-weight': 'bold', 'background-color': '#e8f8f5', 'padding': '10px', 'border-radius': '5px', 'border': '1px solid #2ecc71' });
+                            $info.html('<strong>Paciente verificado:</strong> ' + paciente.Nombres + ' ' + paciente.Apellidos + ' (' + paciente.Tipo_documento + ' ' + paciente.Numero_documento + ') - T. Sangre: ' + paciente.Tipo_sangre).show();
+                        } else {
+                            selectedPacienteId = null;
+                            $info.css({ 'color': '#c0392b', 'font-weight': 'bold', 'background-color': '#fdedec', 'padding': '10px', 'border-radius': '5px', 'border': '1px solid #e74c3c' });
+                            $info.html('<strong>Error:</strong> No se encontró ningún paciente con el criterio ingresado.').show();
+                        }
+                    } else {
+                        selectedPacienteId = null;
+                        $info.css({ 'color': '#c0392b', 'font-weight': 'bold', 'background-color': '#fdedec', 'padding': '10px', 'border-radius': '5px', 'border': '1px solid #e74c3c' });
+                        $info.html('<strong>Error:</strong> ' + response.mensajeError).show();
+                    }
+                },
+                error: function () {
+                    selectedPacienteId = null;
+                    alert("Error al intentar buscar el paciente.");
+                }
+            });
         });
 
         // 2. Desbloquear médicos según la especialidad seleccionada
@@ -280,17 +303,18 @@
                     $medico.append('<option value="3">Dr. Simi</option>');
                 }
             } else {
-                $medico.prop('disabled', true);
+                $medico.prop('disabled', true).val("");
+                $('#hora').prop('disabled', true).val("");
             }
         });
 
-        // 3. Desbloquear horas si hay fecha y médico seleccionado
+        // 3. Desbloquear horas según el médico y fecha seleccionada
         $('#fecha, #medico').change(function () {
             const fecha = $('#fecha').val();
             const medico = $('#medico').val();
             const $hora = $('#hora');
 
-            if(fecha && medico) {
+            if (fecha && medico) {
                 $hora.prop('disabled', false);
                 $hora.empty().append('<option value="" disabled selected>Seleccione hora</option>');
                 $hora.append('<option value="08:00">08:00 AM</option>');
@@ -304,11 +328,16 @@
         $('#form-registrar-cita').submit(function (e) {
             e.preventDefault();
 
+            if (!selectedPacienteId) {
+                alert("Debe buscar y verificar un paciente antes de registrar la cita.");
+                return;
+            }
+
             const cita = {
-                IdPaciente: 1,
-                IdMedico: $('#medico').val(),
-                FechaCita: $('#fecha').val(),
-                HoraCita: $('#hora').val(),
+                Id_paciente: selectedPacienteId,
+                Id_medico: $('#medico').val(),
+                Fecha_cita: $('#fecha').val(),
+                Hora_cita: $('#hora').val(),
                 Motivo: $('#motivo').val(),
                 Observaciones: $('#observaciones').val()
             };
@@ -321,12 +350,13 @@
                 dataType: 'json',
                 success: function (response) {
                     if (response.estadoCorrecto) {
-                        alert("✅ " + response.mensajeError);
+                        alert(response.mensajeError);
                         $('#form-registrar-cita')[0].reset();
                         $('#info-paciente-detallada').hide();
                         $('#medico, #hora').prop('disabled', true);
+                        selectedPacienteId = null;
                     } else {
-                        alert("⚠️ Error: " + response.mensajeError);
+                        alert("Error: " + response.mensajeError);
                     }
                 },
                 error: function () {
@@ -334,5 +364,6 @@
                 }
             });
         });
+    });
     </script>
 }

@@ -59,6 +59,43 @@ namespace Capa2_Aplicacion.ModuloPrincipal.Servicio
             return listaPacientesDTO;
         }
 
+        public List<PacienteDTO> ConsultarPacientesConFiltro(string criterio)
+        {
+            List<PacienteDTO> listaPacientesDTO = new List<PacienteDTO>();
+            try
+            {
+                accesoSQLServer.AbrirConexion();
+                List<Paciente> listaPacientes = pacienteSQL.buscarPorFiltro(criterio);
+                accesoSQLServer.CerrarConexion();
+
+                foreach (Paciente paciente in listaPacientes)
+                {
+                    PacienteDTO pacienteDTO = new PacienteDTO
+                    {
+                        Id_paciente = paciente.Id_paciente,
+                        Tipo_documento = paciente.Tipo_documento,
+                        Numero_documento = paciente.Numero_documento,
+                        Nombres = paciente.Nombres,
+                        Apellidos = paciente.Apellidos,
+                        Sexo = paciente.Sexo,
+                        Fecha_nacimiento = paciente.Fecha_nacimiento,
+                        Direccion = paciente.Direccion,
+                        Telefono = paciente.Telefono,
+                        Correo = paciente.Correo,
+                        Observaciones = paciente.Observaciones,
+                        Tipo_sangre = paciente.Tipo_sangre
+                    };
+                    listaPacientesDTO.Add(pacienteDTO);
+                }
+            }
+            catch (Exception ex)
+            {
+                accesoSQLServer.CerrarConexion();
+                throw ex;
+            }
+            return listaPacientesDTO;
+        }
+
         public void GuardarPaciente(PacienteDTO pacienteDTO)
         {
             try

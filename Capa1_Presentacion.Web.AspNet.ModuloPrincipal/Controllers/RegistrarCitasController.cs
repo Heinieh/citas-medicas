@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Web.Mvc;
 using Capa2_Aplicacion.ModuloPrincipal.DTO;
 using Capa2_Aplicacion.ModuloPrincipal.Servicio;
@@ -11,6 +11,28 @@ namespace Capa1_Presentacion.Web.AspNet.ModuloPrincipal.Controllers
         public ActionResult PaginaRegistrarCita()
         {
             return View();
+        }
+
+        [HttpGet]
+        public JsonResult BuscarPacientes(string criterio)
+        {
+            Boolean esCorrecto;
+            String mensaje = "";
+            System.Collections.Generic.List<PacienteDTO> listaPacientesDTO = null;
+
+            try
+            {
+                GestionarPacienteServicio gestionarPacienteServicio = new GestionarPacienteServicio();
+                listaPacientesDTO = gestionarPacienteServicio.ConsultarPacientesConFiltro(criterio);
+                esCorrecto = true;
+            }
+            catch (Exception ex)
+            {
+                esCorrecto = false;
+                mensaje = ex.Message;
+            }
+
+            return Json(new { data = listaPacientesDTO, estadoCorrecto = esCorrecto, mensajeError = mensaje }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
