@@ -5,9 +5,12 @@ namespace Capa1_Presentacion.Web.AspNet.ModuloPrincipal.Controllers
 {
     public class HomeController : Controller
     {
-        // GET: Home/Index
         public ActionResult Index()
         {
+            if (Session["UsuarioLogueado"] == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
             return View();
         }
     }

@@ -8,6 +8,22 @@ namespace Capa1_Presentacion.Web.AspNet.ModuloPrincipal.Controllers
 {
     public class RegistrarCitasController : Controller
     {
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            if (Session["UsuarioLogueado"] == null)
+            {
+                if (filterContext.HttpContext.Request.IsAjaxRequest())
+                {
+                    filterContext.Result = Json(new { estadoCorrecto = false, mensajeError = "Sesión expirada o no autenticada." }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    filterContext.Result = RedirectToAction("Index", "Login");
+                }
+            }
+            base.OnActionExecuting(filterContext);
+        }
+
         public ActionResult PaginaRegistrarCita()
         {
             return View();

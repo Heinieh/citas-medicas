@@ -45,6 +45,7 @@
     <Compile Include="Entidad\Especialidad.cs" />
     <Compile Include="Entidad\Medico.cs" />
     <Compile Include="Entidad\Paciente.cs" />
+    <Compile Include="Entidad\Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -87,6 +87,7 @@
     <Compile Include="Controllers\ConsultarCitasController.cs" />
     <Compile Include="Controllers\GestionarPacienteController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\RegistrarCitasController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -103,6 +104,7 @@
     <Content Include="Views\ConsultarCitas\PaginaConsultarCitas.cshtml" />
     <Content Include="Views\GestionarPaciente\PaginaGestionarPaciente.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Login\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Capa2_Aplicacion.ModuloPrincipal\Capa2_Aplicacion.ModuloPrincipal.csproj">

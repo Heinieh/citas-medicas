@@ -37,6 +37,10 @@ GO
 /* Drop Foreign Key Constraints                         */
 /* ==================================================== */
 
+IF EXISTS (SELECT 1 FROM dbo.sysobjects WHERE id = object_id(N'[FK_Usuario_Medico]') AND OBJECTPROPERTY(id, N'IsForeignKey') = 1) 
+ALTER TABLE [Usuario] DROP CONSTRAINT [FK_Usuario_Medico]
+GO
+
 IF EXISTS (SELECT 1 FROM dbo.sysobjects WHERE id = object_id(N'[FK_Medico_Especialidad]') AND OBJECTPROPERTY(id, N'IsForeignKey') = 1) 
 ALTER TABLE [Medico] DROP CONSTRAINT [FK_Medico_Especialidad]
 GO
@@ -63,6 +67,10 @@ GO
 
 IF EXISTS (SELECT 1 FROM dbo.sysobjects WHERE id = object_id(N'[Paciente]') AND OBJECTPROPERTY(id, N'IsUserTable') = 1) 
 DROP TABLE [Paciente]
+GO
+
+IF EXISTS (SELECT 1 FROM dbo.sysobjects WHERE id = object_id(N'[Usuario]') AND OBJECTPROPERTY(id, N'IsUserTable') = 1) 
+DROP TABLE [Usuario]
 GO
 
 IF EXISTS (SELECT 1 FROM dbo.sysobjects WHERE id = object_id(N'[Especialidad]') AND OBJECTPROPERTY(id, N'IsUserTable') = 1) 
@@ -119,6 +127,16 @@ CREATE TABLE [Cita]
     [Motivo] varchar(255) NOT NULL,
     [Estado] varchar(50) NOT NULL,
     [Observaciones] varchar(MAX) NULL
+)
+GO
+
+CREATE TABLE [Usuario]
+(
+    [Id_usuario] int IDENTITY(1,1) NOT NULL,
+    [Username] varchar(50) NOT NULL,
+    [Password] varchar(50) NOT NULL,
+    [Rol] varchar(50) NOT NULL,
+    [Id_medico] int NULL
 )
 GO
 
@@ -179,6 +197,20 @@ ALTER TABLE [Cita] ADD CONSTRAINT [FK_Cita_Paciente]
 GO
 
 ALTER TABLE [Cita] ADD CONSTRAINT [FK_Cita_Medico]
+    FOREIGN KEY ([Id_medico]) REFERENCES [Medico] ([Id_medico]) ON DELETE No Action ON UPDATE No Action
+GO
+
+ALTER TABLE [Usuario] 
+ ADD CONSTRAINT [PK_Usuario]
+    PRIMARY KEY CLUSTERED ([Id_usuario] ASC)
+GO
+
+ALTER TABLE [Usuario] 
+ ADD CONSTRAINT [UQ_Usuario_Username]
+    UNIQUE ([Username])
+GO
+
+ALTER TABLE [Usuario] ADD CONSTRAINT [FK_Usuario_Medico]
     FOREIGN KEY ([Id_medico]) REFERENCES [Medico] ([Id_medico]) ON DELETE No Action ON UPDATE No Action
 GO
 
@@ -619,6 +651,25 @@ DELETE FROM	Cita
 WHERE		Id_cita = @pIdCita
 GO
 
+/* ============================================================================================== */
+/* ======================================= 5. TABLA USUARIO ===================================== */
+/* ============================================================================================== */
+
+IF EXISTS (SELECT * FROM sysobjects WHERE name ='sel_validar_usuario' AND xtype = 'P') 
+	DROP PROCEDURE dbo.sel_validar_usuario
+GO
+
+CREATE PROCEDURE [dbo].[sel_validar_usuario]
+@pUsername VARCHAR(50)
+,@pPassword VARCHAR(50)
+AS  
+SET NOCOUNT ON 
+
+SELECT	Id_usuario, Username, Password, Rol, Id_medico
+FROM	Usuario 
+WHERE	Username = @pUsername AND Password = @pPassword
+GO
+
 -- ==========================================
 -- SECCIÓN: Insert_Especialidad.sql
 -- ==========================================
@@ -704,4 +755,21 @@ INSERT INTO [dbo].[Cita]
            (4, 1, '2026-07-12', '08:00:00', 'presión alta', 'Programada', NULL)
 GO
 
-select * from Cita
+-- ==========================================
+-- SECCIÓN: Insert_Usuario.sql
+-- ==========================================
+USE [BD_Clinica]
+GO
+
+INSERT INTO [dbo].[Usuario]
+           ([Username]
+           ,[Password]
+           ,[Rol]
+           ,[Id_medico])
+     VALUES
+           ('admin1', 'admin1', 'Recepcionista', NULL),
+           ('admin2', 'admin2', 'Medico', 1),
+           ('admin3', 'admin3', 'Medico', 2)
+GO
+
+select * from Usuario

@@ -1,3 +1,9 @@
+@{
+    var usuarioLogueado = Session["UsuarioLogueado"] as Capa2_Aplicacion.ModuloPrincipal.DTO.UsuarioDTO;
+    var username = usuarioLogueado != null ? usuarioLogueado.Username : "admin";
+    var isMedico = usuarioLogueado != null && usuarioLogueado.Rol == "Medico";
+    var isRecepcionista = usuarioLogueado != null && usuarioLogueado.Rol == "Recepcionista";
+}
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -15,18 +21,24 @@
             <h1>@ViewBag.HeaderTitle</h1>
             <nav style="margin-top: 10px; display: flex; gap: 10px; font-size: 14px; font-weight: 600;">
                 <a href="@Url.Action("Index", "Home")" style="color: #3498DB; text-decoration: none;">🏠 Inicio</a>
-                <span style="color: #ccc;">|</span>
-
-                <a href="@Url.Action("PaginaRegistrarCita", "RegistrarCitas")" style="color: #3498DB; text-decoration: none;">📅 Registrar Cita</a>
-                <span style="color: #ccc;">|</span>
-
-                <a href="@Url.Action("PaginaConsultarCitas", "ConsultarCitas")" style="color: #3498DB; text-decoration: none;">🔍 Consultar Citas</a>
-                <span style="color: #ccc;">|</span>
-                <a href="@Url.Action("PaginaGestionarPaciente", "GestionarPaciente")" style="color: #3498DB; text-decoration: none;">👥 Gestionar Pacientes</a>
+                
+                @if (isRecepcionista)
+                {
+                    <span style="color: #ccc;">|</span>
+                    <a href="@Url.Action("PaginaRegistrarCita", "RegistrarCitas")" style="color: #3498DB; text-decoration: none;">📅 Registrar Cita</a>
+                    <span style="color: #ccc;">|</span>
+                    <a href="@Url.Action("PaginaGestionarPaciente", "GestionarPaciente")" style="color: #3498DB; text-decoration: none;">👥 Registrar y Gestionar Pacientes</a>
+                }
+                
+                @if (isMedico)
+                {
+                    <span style="color: #ccc;">|</span>
+                    <a href="@Url.Action("PaginaConsultarCitas", "ConsultarCitas")" style="color: #3498DB; text-decoration: none;">🔍 Consultar Citas</a>
+                }
             </nav>
             <div class="usuario-info">
-                <p>Usuario: <strong>admin</strong></p>
-                <a href="#" class="cerrarsesion-btn">Cerrar Sesión</a>
+                <p>Usuario: <strong>@username</strong> @(usuarioLogueado != null ? $"({usuarioLogueado.Rol})" : "")</p>
+                <a href="@Url.Action("CerrarSesion", "Login")" class="cerrarsesion-btn">Cerrar Sesión</a>
             </div>
         </header>
 

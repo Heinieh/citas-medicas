@@ -45,6 +45,7 @@
     <Compile Include="EspecialidadSQL.cs" />
     <Compile Include="MedicoSQL.cs" />
     <Compile Include="PacienteSQL.cs" />
+    <Compile Include="UsuarioSQL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

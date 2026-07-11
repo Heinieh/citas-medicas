@@ -45,9 +45,11 @@
     <Compile Include="DTO\EspecialidadDTO.cs" />
     <Compile Include="DTO\MedicoDTO.cs" />
     <Compile Include="DTO\PacienteDTO.cs" />
+    <Compile Include="DTO\UsuarioDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Servicio\ConsultarCitasServicio.cs" />
     <Compile Include="Servicio\GestionarPacienteServicio.cs" />
+    <Compile Include="Servicio\LoginServicio.cs" />
     <Compile Include="Servicio\RegistrarCitasServicio.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -9,6 +9,22 @@ namespace Capa1_Presentacion.Web.AspNet.ModuloPrincipal.Controllers
 {
     public class ConsultarCitasController : Controller
     {
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            if (Session["UsuarioLogueado"] == null)
+            {
+                if (filterContext.HttpContext.Request.IsAjaxRequest())
+                {
+                    filterContext.Result = Json(new { estadoCorrecto = false, mensajeError = "Sesión expirada o no autenticada." }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    filterContext.Result = RedirectToAction("Index", "Login");
+                }
+            }
+            base.OnActionExecuting(filterContext);
+        }
+
         public ActionResult PaginaConsultarCitas()
         {
             return View();
@@ -23,11 +39,15 @@ namespace Capa1_Presentacion.Web.AspNet.ModuloPrincipal.Controllers
 
             ConsultarCitasServicio consultarCitasServicio = new ConsultarCitasServicio();
 
-            int idMedicoAutenticado = 1;
-
             try
             {
-                
+                var usuario = Session["UsuarioLogueado"] as Capa2_Aplicacion.ModuloPrincipal.DTO.UsuarioDTO;
+                if (usuario == null || !usuario.Id_medico.HasValue)
+                {
+                    throw new Exception("El usuario actual no está asociado a ningún médico especialista.");
+                }
+                int idMedicoAutenticado = usuario.Id_medico.Value;
+
                 listaCitasDTO = consultarCitasServicio.buscarCitasPorFiltros(idMedicoAutenticado, fecha, null, null, estado);
                 esCorrecto = true;
                 mensaje = "";
